@@ -3,13 +3,16 @@
 require "awesome_print"
 require 'rescue_time_api'
 require 'yaml'
+require 'date'
 
 @client = RescueTimeApi::Client.new(key: "")
 
-@year = Date.today.prev_day.year
+@year = Date.today.year
+ydir = "./#{@year}/time"
+Dir.mkdir(ydir) unless File.exist?(ydir)
 
-Date.new(Date.today.prev_day.year, 01, 01).upto(Date.today) do |date|
-  fn = "./#{@year}/time/#{date}.yml"
+Date.new(@year, 01, 01).upto(Date.today) do |date|
+  fn = "#{ydir}/#{date}.yml"
   unless File.exist?(fn) and false
     d = {}
     response = @client.request({
